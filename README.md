@@ -12,19 +12,18 @@
 ## Project Content
 
 1. Introduction
-
-- i. introduction
-  - Fully-Functional Shopping Cart
-  - Instant Feedback
-  - Animated and Intuitive Design
-  - List Products
-  - Sort Products By Price High or Low
-  - Filter Products by Size
-  - Open Modal By Click on Product
-  - Add Product To Cart using Animation
-  - Handle Multiple Click By Adding More Items
-  - Remove Product
-  - Show Checkout Form
-  - Create Order with user friendly id
-  - Admin Section to see list of products
-  - Using postman to add or remove products and orders
+   i. introduction
+   - Fully-Functional Shopping Cart
+   - Instant Feedback
+   - Animated and Intuitive Design
+   - List Products
+   - Sort Products By Price High or Low
+   - Filter Products by Size
+   - Open Modal By Click on Product
+   - Add Product To Cart using Animation
+   - Handle Multiple Click By Adding More Items
+   - Remove Product
+   - Show Checkout Form
+   - Create Order with user friendly id
+   - Admin Section to see list of products
+   - Using postman to add or remove products and orders
