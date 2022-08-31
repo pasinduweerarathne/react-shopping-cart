@@ -12,7 +12,9 @@
 ## Project Content
 
 1. Introduction
+
    i. introduction
+
    - Fully-Functional Shopping Cart
    - Instant Feedback
    - Animated and Intuitive Design
