@@ -1,22 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import formatCurrency from "../utils";
 
-const Cart = ({ cartItems, removeFromCart }) => {
+const Cart = ({ cartItems, removeFromCart, getFormValues }) => {
+  const [showCheckout, setShowCheckout] = useState(true);
+  const [inputValues, setInputValues] = useState({
+    email: "",
+    name: "",
+    address: "",
+  });
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    getFormValues(inputValues);
+  };
+
+  const handleChange = (e) => {
+    e.preventDefault();
+    setInputValues({ ...inputValues, [e.target.name]: e.target.value });
+  };
+
   return (
     <>
       <div>
-        {cartItems.length === 0 ? (
+        {cartItems?.length === 0 ? (
           <div className="cart cart-header">Cart is empty</div>
         ) : (
           <div className="cart cart-header">
-            You have {cartItems.length} in the cart
+            You have {cartItems?.length} in the cart
           </div>
         )}
       </div>
       <div>
         <div className="cart">
           <ul className="cart-items">
-            {cartItems.map((item) => (
+            {cartItems?.map((item) => (
               <li key={item._id}>
                 <div>
                   <img src={item.image} alt={item.titles} />
@@ -37,18 +54,66 @@ const Cart = ({ cartItems, removeFromCart }) => {
             ))}
           </ul>
         </div>
-        {cartItems.length > 0 && (
-          <div className="cart">
-            <div className="total">
-              <div>
-                Total:{" "}
-                {formatCurrency(
-                  cartItems.reduce((a, c) => a + c.price * c.count, 0)
-                )}
+        {cartItems?.length > 0 && (
+          <>
+            <div className="cart">
+              <div className="total">
+                <div>
+                  Total:{" "}
+                  {formatCurrency(
+                    cartItems?.reduce((a, c) => a + c.price * c.count, 0)
+                  )}
+                </div>
+                <button
+                  onClick={() => setShowCheckout(!showCheckout)}
+                  className="button primary"
+                >
+                  Proceed
+                </button>
               </div>
-              <button className="button primary">Proceed</button>
             </div>
-          </div>
+            {showCheckout && (
+              <div className="cart">
+                <form onSubmit={submitHandler}>
+                  <ul className="form-container">
+                    <li>
+                      <label>Email</label>
+                      <input
+                        name="email"
+                        type="email"
+                        required
+                        value={inputValues.email}
+                        onChange={handleChange}
+                      />
+                    </li>
+                    <li>
+                      <label>Name</label>
+                      <input
+                        name="name"
+                        type="text"
+                        required
+                        value={inputValues.name}
+                        onChange={handleChange}
+                      />
+                    </li>
+                    <li>
+                      <label>Address</label>
+                      <input
+                        name="address"
+                        type="text"
+                        required
+                        value={inputValues.address}
+                        onChange={handleChange}
+                      />
+                    </li>
+                  </ul>
+                  <button type="submit" className="button primary">
+                    Submit
+                  </button>
+                </form>
+              </div>
+            )}
+          </>
         )}
       </div>
     </>

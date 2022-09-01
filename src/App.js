@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Cart from "./components/Cart";
 import Filter from "./components/Filter";
 import Products from "./components/Products";
@@ -8,7 +8,11 @@ function App() {
   const [products, setProducts] = useState(data.products);
   const [size, setSize] = useState("");
   const [sort, setSort] = useState("");
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState(
+    localStorage.getItem("cartItems")
+      ? JSON.parse(localStorage.getItem("cartItems"))
+      : []
+  );
 
   const filterProducts = (e) => {
     setSize(e.target.value);
@@ -56,10 +60,19 @@ function App() {
     } else {
       setCartItems([...cartItems, { ...product, count: 1 }]);
     }
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
   };
 
   const removeFromCart = (product) => {
     setCartItems(cartItems.filter((x) => x._id !== product._id));
+    localStorage.setItem(
+      "cartItems",
+      JSON.stringify(cartItems.filter((x) => x._id !== product._id))
+    );
+  };
+
+  const getFormValues = (formValues) => {
+    alert("name " + formValues.name);
   };
 
   return (
@@ -80,7 +93,11 @@ function App() {
             <Products products={products} addToCart={addToCart} />
           </div>
           <div className="sidebar">
-            <Cart cartItems={cartItems} removeFromCart={removeFromCart} />
+            <Cart
+              cartItems={cartItems}
+              removeFromCart={removeFromCart}
+              getFormValues={getFormValues}
+            />
           </div>
         </div>
       </main>
