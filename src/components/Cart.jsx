@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import formatCurrency from "../utils";
+import { Fade } from "react-reveal";
 
 const Cart = ({ cartItems, removeFromCart, getFormValues }) => {
-  const [showCheckout, setShowCheckout] = useState(true);
+  const [showCheckout, setShowCheckout] = useState(false);
   const [inputValues, setInputValues] = useState({
     email: "",
     name: "",
@@ -32,27 +33,29 @@ const Cart = ({ cartItems, removeFromCart, getFormValues }) => {
       </div>
       <div>
         <div className="cart">
-          <ul className="cart-items">
-            {cartItems?.map((item) => (
-              <li key={item._id}>
-                <div>
-                  <img src={item.image} alt={item.titles} />
-                </div>
-                <div>
-                  <div>{item.title}</div>
-                  <div className="right">
-                    {formatCurrency(item.price)} x {item.count}{" "}
-                    <button
-                      className="button"
-                      onClick={() => removeFromCart(item)}
-                    >
-                      Remove
-                    </button>
+          <Fade left cascade>
+            <ul className="cart-items">
+              {cartItems?.map((item) => (
+                <li key={item._id}>
+                  <div>
+                    <img src={item.image} alt={item.titles} />
                   </div>
-                </div>
-              </li>
-            ))}
-          </ul>
+                  <div>
+                    <div>{item.title}</div>
+                    <div className="right">
+                      {formatCurrency(item.price)} x {item.count}{" "}
+                      <button
+                        className="button"
+                        onClick={() => removeFromCart(item)}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </Fade>
         </div>
         {cartItems?.length > 0 && (
           <>
@@ -73,45 +76,47 @@ const Cart = ({ cartItems, removeFromCart, getFormValues }) => {
               </div>
             </div>
             {showCheckout && (
-              <div className="cart">
-                <form onSubmit={submitHandler}>
-                  <ul className="form-container">
-                    <li>
-                      <label>Email</label>
-                      <input
-                        name="email"
-                        type="email"
-                        required
-                        value={inputValues.email}
-                        onChange={handleChange}
-                      />
-                    </li>
-                    <li>
-                      <label>Name</label>
-                      <input
-                        name="name"
-                        type="text"
-                        required
-                        value={inputValues.name}
-                        onChange={handleChange}
-                      />
-                    </li>
-                    <li>
-                      <label>Address</label>
-                      <input
-                        name="address"
-                        type="text"
-                        required
-                        value={inputValues.address}
-                        onChange={handleChange}
-                      />
-                    </li>
-                  </ul>
-                  <button type="submit" className="button primary">
-                    Submit
-                  </button>
-                </form>
-              </div>
+              <Fade right cascade>
+                <div className="cart">
+                  <form onSubmit={submitHandler}>
+                    <ul className="form-container">
+                      <li>
+                        <label>Email</label>
+                        <input
+                          name="email"
+                          type="email"
+                          required
+                          value={inputValues.email}
+                          onChange={handleChange}
+                        />
+                      </li>
+                      <li>
+                        <label>Name</label>
+                        <input
+                          name="name"
+                          type="text"
+                          required
+                          value={inputValues.name}
+                          onChange={handleChange}
+                        />
+                      </li>
+                      <li>
+                        <label>Address</label>
+                        <input
+                          name="address"
+                          type="text"
+                          required
+                          value={inputValues.address}
+                          onChange={handleChange}
+                        />
+                      </li>
+                    </ul>
+                    <button type="submit" className="button primary">
+                      Submit
+                    </button>
+                  </form>
+                </div>
+              </Fade>
             )}
           </>
         )}
