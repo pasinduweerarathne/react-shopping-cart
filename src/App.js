@@ -45,27 +45,27 @@ function App() {
   //   );
   // };
 
-  const addToCart = (product) => {
-    const exist = cartItems.find((x) => x._id === product._id);
-    if (exist) {
-      setCartItems(
-        cartItems.map((item) =>
-          item._id === product._id ? { ...exist, count: exist.count + 1 } : item
-        )
-      );
-    } else {
-      setCartItems([...cartItems, { ...product, count: 1 }]);
-    }
-    localStorage.setItem("cartItems", JSON.stringify(cartItems));
-  };
+  // const addToCart = (product) => {
+  //   const exist = cartItems.find((x) => x._id === product._id);
+  //   if (exist) {
+  //     setCartItems(
+  //       cartItems.map((item) =>
+  //         item._id === product._id ? { ...exist, count: exist.count + 1 } : item
+  //       )
+  //     );
+  //   } else {
+  //     setCartItems([...cartItems, { ...product, count: 1 }]);
+  //   }
+  //   localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  // };
 
-  const removeFromCart = (product) => {
-    setCartItems(cartItems.filter((x) => x._id !== product._id));
-    localStorage.setItem(
-      "cartItems",
-      JSON.stringify(cartItems.filter((x) => x._id !== product._id))
-    );
-  };
+  // const removeFromCart = (product) => {
+  //   setCartItems(cartItems.filter((x) => x._id !== product._id));
+  //   localStorage.setItem(
+  //     "cartItems",
+  //     JSON.stringify(cartItems.filter((x) => x._id !== product._id))
+  //   );
+  // };
 
   const getFormValues = (formValues) => {
     alert("name " + formValues.name);
@@ -80,14 +80,10 @@ function App() {
         <div className="content">
           <div className="main-content">
             <Filter />
-            <Products addToCart={addToCart} />
+            <Products />
           </div>
           <div className="sidebar">
-            <Cart
-              cartItems={cartItems}
-              removeFromCart={removeFromCart}
-              getFormValues={getFormValues}
-            />
+            <Cart getFormValues={getFormValues} />
           </div>
         </div>
       </main>

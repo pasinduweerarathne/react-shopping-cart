@@ -1,14 +1,20 @@
 import React, { useState } from "react";
 import formatCurrency from "../utils";
 import { Fade } from "react-reveal";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
-const Cart = ({ cartItems, removeFromCart, getFormValues }) => {
+import { removeFromCart } from "../redux/actions/cartActions";
+
+const Cart = ({ getFormValues }) => {
   const [showCheckout, setShowCheckout] = useState(false);
   const [inputValues, setInputValues] = useState({
     email: "",
     name: "",
     address: "",
   });
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.cartItems);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -46,7 +52,7 @@ const Cart = ({ cartItems, removeFromCart, getFormValues }) => {
                       {formatCurrency(item.price)} x {item.count}{" "}
                       <button
                         className="button"
-                        onClick={() => removeFromCart(item)}
+                        onClick={() => dispatch(removeFromCart(item))}
                       >
                         Remove
                       </button>

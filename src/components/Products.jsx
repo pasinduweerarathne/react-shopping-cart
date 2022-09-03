@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import formatCurrency from "../utils";
-import Fade from "react-reveal/Fade";
 import Modal from "react-modal";
-import { Zoom } from "react-reveal";
+import { Zoom, Fade } from "react-reveal";
 import { useDispatch, useSelector } from "react-redux";
 
 import { fetchProducts } from "../redux/actions/productActions";
+import { addToCart } from "../redux/actions/cartActions";
 
-const Products = ({ addToCart }) => {
+const Products = () => {
   const [showModal, setShowModal] = useState({ product: null });
   const productsFromRedux = useSelector(
     (state) => state.products.filteredItems
@@ -18,7 +18,7 @@ const Products = ({ addToCart }) => {
 
   useEffect(() => {
     dispatch(fetchProducts());
-  }, []);
+  }, [dispatch]);
 
   const openModal = (product) => {
     setShowModal({ product });
@@ -36,28 +36,30 @@ const Products = ({ addToCart }) => {
         <Fade bottom cascade>
           <ul className="products">
             {productsFromRedux
-              ? productsFromRedux?.map((product) => (
-                  <li key={product._id}>
-                    <div className="product">
-                      <a
-                        href={"#" + product._id}
-                        onClick={() => openModal(product)}
-                      >
-                        <img src={product.image} alt={product.title} />
-                        <p>{product.title}</p>
-                      </a>
-                      <div className="product-price">
-                        <div>{formatCurrency(product.price)}</div>
-                        <button
-                          className="button primary"
-                          onClick={() => addToCart(product)}
+              ? productsFromRedux?.map((product) => {
+                  return (
+                    <li key={product._id}>
+                      <div className="product">
+                        <a
+                          href={"#" + product._id}
+                          onClick={() => openModal(product)}
                         >
-                          Add To Cart
-                        </button>
+                          <img src={product.image} alt={product.title} />
+                          <p>{product.title}</p>
+                        </a>
+                        <div className="product-price">
+                          <div>{formatCurrency(product.price)}</div>
+                          <button
+                            className="button primary"
+                            onClick={() => dispatch(addToCart(product))}
+                          >
+                            Add To Cart
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  </li>
-                ))
+                    </li>
+                  );
+                })
               : productsRedux?.map((product) => (
                   <li key={product._id}>
                     <div className="product">
@@ -72,7 +74,7 @@ const Products = ({ addToCart }) => {
                         <div>{formatCurrency(product.price)}</div>
                         <button
                           className="button primary"
-                          onClick={() => addToCart(product)}
+                          onClick={() => dispatch(addToCart(product))}
                         >
                           Add To Cart
                         </button>
