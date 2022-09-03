@@ -1,14 +1,14 @@
-import { useState } from "react";
+// import { useState } from "react";
 import Cart from "./components/Cart";
 import Filter from "./components/Filter";
 import Products from "./components/Products";
 
 function App() {
-  const [cartItems, setCartItems] = useState(
-    localStorage.getItem("cartItems")
-      ? JSON.parse(localStorage.getItem("cartItems"))
-      : []
-  );
+  // const [cartItems, setCartItems] = useState(
+  //   localStorage.getItem("cartItems")
+  //     ? JSON.parse(localStorage.getItem("cartItems"))
+  //     : []
+  // );
 
   // const filterProducts = (e) => {
   //   setSize(e.target.value);
@@ -67,9 +67,9 @@ function App() {
   //   );
   // };
 
-  const getFormValues = (formValues) => {
-    alert("name " + formValues.name);
-  };
+  // const getFormValues = (formValues) => {
+  //   alert("name " + formValues.name);
+  // };
 
   return (
     <div className="grid-container ">
@@ -83,7 +83,7 @@ function App() {
             <Products />
           </div>
           <div className="sidebar">
-            <Cart getFormValues={getFormValues} />
+            <Cart />
           </div>
         </div>
       </main>

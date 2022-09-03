@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import formatCurrency from "../utils";
-import { Fade } from "react-reveal";
+import { Fade, Zoom } from "react-reveal";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import Modal from "react-modal";
 
 import { removeFromCart } from "../redux/actions/cartActions";
+import { clearOrder, createOrder } from "../redux/actions/orderActions";
 
-const Cart = ({ getFormValues }) => {
+const Cart = () => {
   const [showCheckout, setShowCheckout] = useState(false);
   const [inputValues, setInputValues] = useState({
     email: "",
@@ -15,10 +17,16 @@ const Cart = ({ getFormValues }) => {
   });
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.cartItems);
+  const order = useSelector((state) => state.order?.order);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    getFormValues(inputValues);
+    const order = {
+      ...inputValues,
+      cartItems,
+      total: cartItems.reduce((a, c) => a + c.price * c.count, 0),
+    };
+    dispatch(createOrder(order));
   };
 
   const handleChange = (e) => {
@@ -26,17 +34,66 @@ const Cart = ({ getFormValues }) => {
     setInputValues({ ...inputValues, [e.target.name]: e.target.value });
   };
 
+  const closeModal = () => {
+    dispatch(clearOrder());
+  };
+
   return (
     <>
-      <div>
-        {cartItems?.length === 0 ? (
-          <div className="cart cart-header">Cart is empty</div>
-        ) : (
-          <div className="cart cart-header">
-            You have {cartItems?.length} in the cart
-          </div>
-        )}
-      </div>
+      {cartItems?.length === 0 ? (
+        <div className="cart cart-header">Cart is empty</div>
+      ) : (
+        <div className="cart cart-header">
+          You have {cartItems?.length} in the cart
+        </div>
+      )}
+
+      {order && (
+        <Modal isOpen={true} onRequestClose={closeModal}>
+          <Zoom>
+            <button className="close-modal" onClick={closeModal}>
+              x
+            </button>
+            <div className="order-details">
+              <h3 className="success-message">You order has been placed</h3>
+              <h2>Order {order._id}</h2>
+              <ul>
+                <li>
+                  <div>Name:</div>
+                  <div>{order.name}</div>
+                </li>
+                <li>
+                  <div>Email:</div>
+                  <div>{order.email}</div>
+                </li>
+                <li>
+                  <div>Address:</div>
+                  <div>{order.address}</div>
+                </li>
+                <li>
+                  <div>Date:</div>
+                  <div>{order.createdAt}</div>
+                </li>
+                <li>
+                  <div>Total:</div>
+                  <div>{formatCurrency(order.total)}</div>
+                </li>
+                <li>
+                  <div>Cart Items:</div>
+                  <div>
+                    {order.cartItems.map((x) => (
+                      <div key={x.title}>
+                        {x.count} {" x "} {x.title}
+                      </div>
+                    ))}
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </Zoom>
+        </Modal>
+      )}
+
       <div>
         <div className="cart">
           <Fade left cascade>
